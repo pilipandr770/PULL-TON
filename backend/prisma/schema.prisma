@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model - linked to TON wallet address
+model User {
+  id            String   @id @default(cuid())
+  walletAddress String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // User's cached pool data (updated periodically)
+  cachedShares  String?  // BigInt as string
+  cachedValue   String?  // Estimated TON value as string
+  lastSyncAt    DateTime?
+  
+  // Relations
+  subscription  Subscription?
+  transactions  Transaction[]
+}
+
+// Subscription model - 5€/month access
+model Subscription {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Stripe data
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  stripePriceId        String?
+  
+  // Status
+  status               SubscriptionStatus @default(INACTIVE)
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+enum SubscriptionStatus {
+  INACTIVE
+  ACTIVE
+  CANCELED
+  PAST_DUE
+}
+
+// Transaction history (for dashboard)
+model Transaction {
+  id            String          @id @default(cuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type          TransactionType
+  amount        String          // nanoTON as string
+  shares        String?         // shares involved
+  txHash        String?         // TON transaction hash
+  status        TxStatus        @default(PENDING)
+  
+  createdAt     DateTime        @default(now())
+  confirmedAt   DateTime?
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAW
+  REWARD
+}
+
+enum TxStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}
+
+// Pool statistics (cached)
+model PoolStats {
+  id            String   @id @default("singleton")
+  totalBalance  String   // nanoTON
+  totalShares   String
+  sharePrice    String   // nanoTON per share
+  totalUsers    Int      @default(0)
+  updatedAt     DateTime @updatedAt
+}
+
+// Admin users
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         AdminRole @default(MODERATOR)
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  MODERATOR
+}

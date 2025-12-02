@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=file:/app/data/dev.db
+      - PORT=3001
+      - NODE_ENV=development
+      - JWT_SECRET=local-dev-secret-change-in-production
+      - TON_NETWORK=testnet
+      - TON_ENDPOINT=https://testnet.toncenter.com/api/v2/jsonRPC
+      - FRONTEND_URL=http://localhost:3000
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-sk_test_placeholder}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-whsec_placeholder}
+      - STRIPE_PRICE_ID=${STRIPE_PRICE_ID:-price_placeholder}
+      - ADMIN_EMAIL=admin@pool.ton
+      - ADMIN_PASSWORD=admin123
+    volumes:
+      - backend-data:/app/data
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:3001
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend-data:

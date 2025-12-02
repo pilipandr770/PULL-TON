@@ -1,0 +1,667 @@
+#pragma version =0.4.6;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+;; CommunityTonPool.tact_CommunityTonPool.headers.fc
+;;
+;; Header files for CommunityTonPool
+;; NOTE: declarations are sorted for optimal order
+;;
+
+;; __tact_not_null
+forall X -> X __tact_not_null(X x) impure inline;
+
+;; __tact_context_get
+(int, slice, int, slice) __tact_context_get() inline;
+
+;; __tact_context_get_sender
+slice __tact_context_get_sender() inline;
+
+;; __tact_dict_get_slice_uint
+int __tact_dict_get_slice_uint(cell d, int kl, slice k, int vl) inline;
+
+;; __tact_dict_set_slice_uint
+(cell, ()) __tact_dict_set_slice_uint(cell d, int kl, slice k, int v, int vl) inline;
+
+;; $DeployOk$_store
+builder $DeployOk$_store(builder build_0, (int) v) inline;
+
+;; $DeployOk$_store_cell
+cell $DeployOk$_store_cell((int) v, builder b) inline;
+
+;; $CommunityTonPool$_store
+builder $CommunityTonPool$_store(builder build_0, (int, cell, int, int, int) v) inline;
+
+;; $CommunityTonPool$_load
+(slice, ((int, cell, int, int, int))) $CommunityTonPool$_load(slice sc_0) inline;
+
+;; $Context$_get_value
+_ $Context$_get_value((int, slice, int, slice) v) inline;
+
+;; $CommunityTonPool$init$_load
+(slice, ((int))) $CommunityTonPool$init$_load(slice sc_0) inline;
+
+;; $CommunityTonPool$_contract_init
+(int, cell, int, int, int) $CommunityTonPool$_contract_init(int $version) impure inline;
+
+;; $CommunityTonPool$_contract_load
+(int, cell, int, int, int) $CommunityTonPool$_contract_load() impure inline;
+
+;; $CommunityTonPool$_contract_store
+() $CommunityTonPool$_contract_store((int, cell, int, int, int) v) impure inline;
+
+;; $CommunityTonPool$_fun_poolBalanceNow
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_poolBalanceNow((int, cell, int, int, int) $self) impure inline_ref;
+
+;; $CommunityTonPool$_fun_poolBalanceBeforeMsg
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_poolBalanceBeforeMsg((int, cell, int, int, int) $self) impure inline_ref;
+
+;; $CommunityTonPool$_fun_getUserSharesInternal
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_getUserSharesInternal((int, cell, int, int, int) $self, slice $user) impure inline_ref;
+
+;; $CommunityTonPool$_fun_setUserShares
+((int, cell, int, int, int), ()) $CommunityTonPool$_fun_setUserShares((int, cell, int, int, int) $self, slice $user, int $newShares) impure inline_ref;
+
+;; $CommunityTonPool$_fun_poolBalance
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_poolBalance((int, cell, int, int, int) $self) impure inline_ref;
+
+;; $CommunityTonPool$_fun_totalPoolShares
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_totalPoolShares((int, cell, int, int, int) $self) impure inline_ref;
+
+;; $CommunityTonPool$_fun_userShares
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_userShares((int, cell, int, int, int) $self, slice $user) impure inline_ref;
+
+;; $CommunityTonPool$_fun_sharePrice
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_sharePrice((int, cell, int, int, int) $self) impure inline_ref;
+
+;; $MessageParameters$_constructor_bounce_to_value_mode_body
+((int, cell, int, slice, int)) $MessageParameters$_constructor_bounce_to_value_mode_body(int $bounce, slice $to, int $value, int $mode, cell $body) inline;
+
+;; $CommunityTonPool$_fun_notify
+((int, cell, int, int, int), ()) $CommunityTonPool$_fun_notify((int, cell, int, int, int) $self, cell $body) impure inline;
+
+;; $SendParameters$_constructor_to_value_mode_bounce
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_mode_bounce(slice $to, int $value, int $mode, int $bounce) inline;
+
+;; $DeployOk$_constructor_queryId
+((int)) $DeployOk$_constructor_queryId(int $queryId) inline;
+
+
+;; CommunityTonPool.tact_CommunityTonPool.stdlib.fc
+global (int, slice, int, slice) __tact_context;
+global slice __tact_context_sender;
+global cell __tact_child_contract_codes;
+global int __tact_randomized;
+
+forall X -> X __tact_not_null(X x) impure inline {
+    throw_if(128, null?(x)); return x;
+}
+
+(cell, int) __tact_dict_delete(cell dict, int key_len, slice index) asm(index dict key_len) """
+    DICTDEL
+""";
+
+(slice, int) __tact_dict_get(cell dict, int key_len, slice index) asm(index dict key_len) """
+    DICTGET NULLSWAPIFNOT
+""";
+
+(int, slice, int, slice) __tact_context_get() inline {
+    return __tact_context;
+}
+
+slice __tact_context_get_sender() inline {
+    return __tact_context_sender;
+}
+
+int __tact_dict_get_slice_uint(cell d, int kl, slice k, int vl) inline {
+    var (r, ok) = __tact_dict_get(d, kl, k);
+    if (ok) {
+        return r~load_uint(vl);
+    } else {
+        return null();
+    }
+}
+
+(cell, ()) __tact_dict_set_slice_uint(cell d, int kl, slice k, int v, int vl) inline {
+    if (null?(v)) {
+        var (r, ok) = __tact_dict_delete(d, kl, k);
+        return (r, ());
+    } else {
+        return (dict_set_builder(d, kl, k, begin_cell().store_uint(v, vl)), ());
+    }
+}
+
+int $global_myBalance() impure asm """
+    BALANCE FIRST
+""";
+
+() $global_nativeReserve(int $amount, int $mode) impure asm """
+    RAWRESERVE
+""";
+
+() $global_message((int, cell, int, slice, int) $params) impure asm """
+    NEWC
+    b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+    1 STI               // store `bounce`
+    b{000} STSLICECONST // store bounced = false and src = addr_none
+    STSLICE             // store `to`
+    SWAP
+    STGRAMS             // store `value`
+    106 PUSHINT         // 1 + 4 + 4 + 64 + 32 + 1
+    STZEROES
+    // → Stack state
+    // s0: Builder
+    // s1: `body`
+    // s2: `mode`
+    STDICT
+    ENDC
+    SWAP
+    SENDRAWMSG
+""";
+
+() $global_send((int, cell, cell, cell, int, slice, int) $params) impure asm """
+    NEWC
+    b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+    1 STI               // store `bounce`
+    b{000} STSLICECONST // store bounced = false and src = addr_none
+    STSLICE             // store `to`
+    SWAP
+    STGRAMS             // store `value`
+    105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+    STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+    // → Stack state
+    // s0: Builder
+    // s1: `data`
+    // s2: `code`
+    // s3: `body`
+    // s4: `mode`
+
+    // Group 2: Placing the Builder after code and data, then checking those for nullability
+    s2 XCHG0
+    DUP2
+    ISNULL
+    SWAP
+    ISNULL
+    AND
+    // → Stack state
+    // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+    // s1: `code`
+    // s2: `data`
+    // s3: Builder
+    // s4: `body`
+    // s5: `mode`
+
+    // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+    <{
+        DROP2 // drop `data` and `code`, since either of those is null
+        b{0} STSLICECONST
+    }> PUSHCONT
+
+    // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+    <{
+        // _ split_depth:(Maybe (## 5))
+        //   special:(Maybe TickTock)
+        //   code:(Maybe ^Cell)
+        //   data:(Maybe ^Cell)
+        //   library:(Maybe ^Cell)
+        // = StateInit;
+        ROT                // place message Builder on top
+        b{10} STSLICECONST // store Maybe = true, Either = false
+        // Start composing inlined StateInit
+        b{00} STSLICECONST // store split_depth and special first
+        STDICT             // store code
+        STDICT             // store data
+        b{0} STSLICECONST  // store library
+    }> PUSHCONT
+
+    // Group 3: IFELSE that does the branching shown above
+    IFELSE
+    // → Stack state
+    // s0: Builder
+    // s1: null or StateInit
+    // s2: `body`
+    // s3: `mode`
+
+    // Group 4: Finalizing the message
+    STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+    ENDC
+    // → Stack state
+    // s0: Cell
+    // s1: `mode`
+
+    // Group 5: Sending the message, with `mode` on top
+    SWAP
+    SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+""";
+
+((int, cell, int, int, int), ()) $CommunityTonPool$_fun_notify((int, cell, int, int, int) $self, cell $body) impure inline {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    slice $to = __tact_context_get_sender();
+    int $bounce = false;
+    if (false) {
+        int $balance = $global_myBalance();
+        int $balanceBeforeMessage = ($balance - $Context$_get_value(__tact_context_get()));
+        if (($balanceBeforeMessage < 0)) {
+            $global_nativeReserve(0, 0);
+            $global_message($MessageParameters$_constructor_bounce_to_value_mode_body($bounce, $to, 0, 130, $body));
+            return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), ());
+        }
+    }
+    $global_message($MessageParameters$_constructor_bounce_to_value_mode_body($bounce, $to, 0, 66, $body));
+    return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), ());
+}
+
+;; CommunityTonPool.tact_CommunityTonPool.storage.fc
+;;
+;; Type: Context
+;; TLB: _ bounceable:bool sender:address value:int257 raw:^slice = Context
+;;
+
+_ $Context$_get_value((int, slice, int, slice) v) inline {
+    var (v'bounceable, v'sender, v'value, v'raw) = v;
+    return v'value;
+}
+
+;;
+;; Type: SendParameters
+;; TLB: _ mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell value:int257 to:address bounce:bool = SendParameters
+;;
+
+((int, cell, cell, cell, int, slice, int)) $SendParameters$_constructor_to_value_mode_bounce(slice $to, int $value, int $mode, int $bounce) inline {
+    return ($mode, null(), null(), null(), $value, $to, $bounce);
+}
+
+;;
+;; Type: MessageParameters
+;; TLB: _ mode:int257 body:Maybe ^cell value:int257 to:address bounce:bool = MessageParameters
+;;
+
+((int, cell, int, slice, int)) $MessageParameters$_constructor_bounce_to_value_mode_body(int $bounce, slice $to, int $value, int $mode, cell $body) inline {
+    return ($mode, $body, $value, $to, $bounce);
+}
+
+;;
+;; Type: DeployOk
+;; Header: 0xaff90f57
+;; TLB: deploy_ok#aff90f57 queryId:uint64 = DeployOk
+;;
+
+builder $DeployOk$_store(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell $DeployOk$_store_cell((int) v, builder b) inline {
+    return $DeployOk$_store(b, v).end_cell();
+}
+
+((int)) $DeployOk$_constructor_queryId(int $queryId) inline {
+    return ($queryId);
+}
+
+;;
+;; Type: CommunityTonPool
+;; TLB: _ totalShares:uint128 shares:dict<address, uint128> minDeposit:coins minTonsForStorage:coins version:uint8 = CommunityTonPool
+;;
+
+builder $CommunityTonPool$_store(builder build_0, (int, cell, int, int, int) v) inline {
+    var (v'totalShares, v'shares, v'minDeposit, v'minTonsForStorage, v'version) = v;
+    build_0 = build_0.store_uint(v'totalShares, 128);
+    build_0 = build_0.store_dict(v'shares);
+    build_0 = build_0.store_varuint16(v'minDeposit);
+    build_0 = build_0.store_varuint16(v'minTonsForStorage);
+    build_0 = build_0.store_uint(v'version, 8);
+    return build_0;
+}
+
+(slice, ((int, cell, int, int, int))) $CommunityTonPool$_load(slice sc_0) inline {
+    var v'totalShares = sc_0~load_uint(128);
+    var v'shares = sc_0~load_dict();
+    var v'minDeposit = sc_0~load_varuint16();
+    var v'minTonsForStorage = sc_0~load_varuint16();
+    var v'version = sc_0~load_uint(8);
+    return (sc_0, (v'totalShares, v'shares, v'minDeposit, v'minTonsForStorage, v'version));
+}
+
+(slice, ((int))) $CommunityTonPool$init$_load(slice sc_0) inline {
+    var v'version = sc_0~load_int(257);
+    return (sc_0, (v'version));
+}
+
+(int, cell, int, int, int) $CommunityTonPool$_contract_load() impure inline {
+    slice $sc = get_data().begin_parse();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$CommunityTonPool$_load();
+    }
+    else {
+        (int $version) = $sc~$CommunityTonPool$init$_load();
+        $sc.end_parse();
+        return $CommunityTonPool$_contract_init($version);
+    }
+}
+
+() $CommunityTonPool$_contract_store((int, cell, int, int, int) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_int(true, 1);
+    b = $CommunityTonPool$_store(b, v);
+    set_data(b.end_cell());
+}
+
+;;
+;; Contract CommunityTonPool functions
+;;
+
+(int, cell, int, int, int) $CommunityTonPool$_contract_init(int $version) impure inline {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = (null(), null(), null(), null(), null());
+    $self'totalShares = 0;
+    $self'shares = null();
+    $self'minDeposit = 1000000000;
+    $self'minTonsForStorage = 50000000;
+    $self'version = $version;
+    return ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version);
+}
+
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_poolBalanceNow((int, cell, int, int, int) $self) impure inline_ref {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    var $fresh$ret_0 = $global_myBalance();
+    return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_0);
+}
+
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_poolBalanceBeforeMsg((int, cell, int, int, int) $self) impure inline_ref {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    var ($ctx'bounceable, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    int $msgValue = $ctx'value;
+    var $fresh$ret_1 = ($global_myBalance() - $msgValue);
+    return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_1);
+}
+
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_getUserSharesInternal((int, cell, int, int, int) $self, slice $user) impure inline_ref {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    int $sOpt = __tact_dict_get_slice_uint($self'shares, 267, $user, 128);
+    if (null?($sOpt)) {
+        var $fresh$ret_2 = 0;
+        return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_2);
+    } else {
+        var $fresh$ret_3 = __tact_not_null($sOpt);
+        return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_3);
+    }
+}
+
+((int, cell, int, int, int), ()) $CommunityTonPool$_fun_setUserShares((int, cell, int, int, int) $self, slice $user, int $newShares) impure inline_ref {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    if (($newShares <= 0)) {
+        $self'shares~__tact_dict_set_slice_uint(267, $user, null(), 128);
+    } else {
+        $self'shares~__tact_dict_set_slice_uint(267, $user, $newShares, 128);
+    }
+    return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), ());
+}
+
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_poolBalance((int, cell, int, int, int) $self) impure inline_ref {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    var $fresh$ret_4 = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_poolBalanceNow();
+    return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_4);
+}
+
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_totalPoolShares((int, cell, int, int, int) $self) impure inline_ref {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    var $fresh$ret_5 = $self'totalShares;
+    return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_5);
+}
+
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_userShares((int, cell, int, int, int) $self, slice $user) impure inline_ref {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    var $fresh$ret_6 = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_getUserSharesInternal($user);
+    return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_6);
+}
+
+((int, cell, int, int, int), int) $CommunityTonPool$_fun_sharePrice((int, cell, int, int, int) $self) impure inline_ref {
+    var (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)) = $self;
+    ifnot ($self'totalShares) {
+        var $fresh$ret_7 = 0;
+        return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_7);
+    }
+    var $fresh$ret_8 = (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_poolBalanceNow() / $self'totalShares);
+    return (($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version), $fresh$ret_8);
+}
+
+;;
+;; Get methods of a Contract CommunityTonPool
+;;
+
+_ %poolBalance() method_id(107132) {
+    var self = $CommunityTonPool$_contract_load();
+    var res = self~$CommunityTonPool$_fun_poolBalance();
+    return res;
+}
+
+_ %totalPoolShares() method_id(78652) {
+    var self = $CommunityTonPool$_contract_load();
+    var res = self~$CommunityTonPool$_fun_totalPoolShares();
+    return res;
+}
+
+_ %userShares(slice $user) method_id(80970) {
+    slice $user = $user;
+    var self = $CommunityTonPool$_contract_load();
+    var res = self~$CommunityTonPool$_fun_userShares($user);
+    return res;
+}
+
+_ %sharePrice() method_id(86219) {
+    var self = $CommunityTonPool$_contract_load();
+    var res = self~$CommunityTonPool$_fun_sharePrice();
+    return res;
+}
+
+;;
+;; Routing of a Contract CommunityTonPool
+;;
+
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    cs~skip_bits(2);
+    var msg_bounceable = cs~load_int(1);
+    var msg_bounced = cs~load_int(1);
+    slice msg_sender_addr = cs~load_msg_addr();
+    __tact_context = (msg_bounceable, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version) = $CommunityTonPool$_contract_load();
+    
+    ;; Handle bounced messages
+    if (msg_bounced) { return (); }
+    int op = 0;
+    int in_msg_length = slice_bits(in_msg);
+    if (in_msg_length >= 32) {
+        op = in_msg.preload_uint(32);
+        ;; Receive Withdraw message
+        if (op == 2291679769) {
+            in_msg~skip_bits(32);
+            var $msg'shares = in_msg~load_uint(128);
+            var ($ctx'bounceable, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+            slice $from = __tact_context_get_sender();
+            int $requestedShares = $msg'shares;
+            throw_unless(1002, ($requestedShares > 0));
+            int $userPrev = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_getUserSharesInternal($from);
+            throw_unless(1003, ($requestedShares <= $userPrev));
+            int $poolBefore = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_poolBalanceBeforeMsg();
+            int $liquidBalance = ($poolBefore - $self'minTonsForStorage);
+            throw_unless(1004, ($liquidBalance > 0));
+            int $payout = (($liquidBalance * $requestedShares) / $self'totalShares);
+            throw_unless(1005, ($payout > 0));
+            $self'totalShares = ($self'totalShares - $requestedShares);
+            int $remaining = ($userPrev - $requestedShares);
+            ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_setUserShares($from, $remaining);
+            $global_send($SendParameters$_constructor_to_value_mode_bounce($from, $payout, 2, true));
+            $CommunityTonPool$_contract_store(($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version));
+            return ();
+        }
+        
+        ;; Receive Deploy message
+        if (op == 0x946a98b6) {
+            in_msg~skip_bits(32);
+            var $deploy'queryId = in_msg~load_uint(64);
+            ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId), begin_cell()));
+            $CommunityTonPool$_contract_store(($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version));
+            return ();
+        }
+        
+    }
+    ;; Receive empty message
+    if ((op == 0) & (in_msg_length <= 32)) {
+        var ($ctx'bounceable, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+        slice $from = __tact_context_get_sender();
+        int $msgValue = $ctx'value;
+        if (($msgValue >= $self'minDeposit)) {
+            int $poolBefore = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_poolBalanceBeforeMsg();
+            int $mintedShares = 0;
+            if (( (($self'totalShares == 0)) ? (true) : (($poolBefore == 0)) )) {
+                $mintedShares = $msgValue;
+            } else {
+                $mintedShares = (($msgValue * $self'totalShares) / $poolBefore);
+            }
+            if (($mintedShares > 0)) {
+                $self'totalShares = ($self'totalShares + $mintedShares);
+                int $userPrev = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_getUserSharesInternal($from);
+                ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_setUserShares($from, ($userPrev + $mintedShares));
+            }
+        }
+        $CommunityTonPool$_contract_store(($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version));
+        return ();
+    }
+    ;; Empty Receiver and Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        ;; Receive "deposit" message
+        if (text_op == 0x6c7f095b2834dcd10181b530fba875659e91af767b1d084243958c07bfe40df5) {
+            var ($ctx'bounceable, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+            slice $from = __tact_context_get_sender();
+            int $msgValue = $ctx'value;
+            throw_unless(1001, ($msgValue >= $self'minDeposit));
+            int $poolBefore = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_poolBalanceBeforeMsg();
+            int $mintedShares = 0;
+            if (( (($self'totalShares == 0)) ? (true) : (($poolBefore == 0)) )) {
+                $mintedShares = $msgValue;
+            } else {
+                $mintedShares = (($msgValue * $self'totalShares) / $poolBefore);
+            }
+            throw_unless(1002, ($mintedShares > 0));
+            $self'totalShares = ($self'totalShares + $mintedShares);
+            int $userPrev = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_getUserSharesInternal($from);
+            ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_setUserShares($from, ($userPrev + $mintedShares));
+            $CommunityTonPool$_contract_store(($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version));
+            return ();
+        }
+    }
+    ;; Receiver fallback
+    slice $msg = in_msg;
+    var ($ctx'bounceable, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    slice $from = __tact_context_get_sender();
+    int $msgValue = $ctx'value;
+    if (($msgValue >= $self'minDeposit)) {
+        int $poolBefore = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_poolBalanceBeforeMsg();
+        int $mintedShares = 0;
+        if (( (($self'totalShares == 0)) ? (true) : (($poolBefore == 0)) )) {
+            $mintedShares = $msgValue;
+        } else {
+            $mintedShares = (($msgValue * $self'totalShares) / $poolBefore);
+        }
+        if (($mintedShares > 0)) {
+            $self'totalShares = ($self'totalShares + $mintedShares);
+            int $userPrev = ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_getUserSharesInternal($from);
+            ($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version)~$CommunityTonPool$_fun_setUserShares($from, ($userPrev + $mintedShares));
+        }
+    }
+    $CommunityTonPool$_contract_store(($self'totalShares, $self'shares, $self'minDeposit, $self'minTonsForStorage, $self'version));
+}
+
+
+() __tact_selector_hack_asm() impure asm """
+@atend @ 1 {
+        execute current@ context@ current!
+        {
+            // The core idea of this function is to save gas by avoiding unnecessary dict jump, when recv_internal/recv_external is called
+            // We want to extract recv_internal/recv_external from the dict and select needed function
+            // not by jumping to the needed function by it's index, but by using usual IF statements.
+
+            }END> b> // Close previous builder, now we have a cell of previous code on top of the stack
+
+            <{ // Start of the new code builder
+                SETCP0
+                // Swap the new code builder with the previous code, now we have previous code on top of the stack
+                swap
+                // Transform cell to slice and load first ref from the previous code, now we have the dict on top of the stack
+                <s ref@
+
+                // Extract the recv_internal from the dict
+                dup 0 swap @procdictkeylen idict@ { "internal shortcut error" abort } ifnot
+                swap
+
+                // Delete the recv_internal from the dict
+                0 swap @procdictkeylen idict- drop
+                // Delete the recv_external from the dict (it's okay if it's not there)
+                -1 swap @procdictkeylen idict- drop
+                // Delete the __tact_selector_hack from the dict
+                65535 swap @procdictkeylen idict- drop
+
+                // Bring the code builder from the bottom of the stack
+                // because if recv_external extraction is optional, and the number of elements on the stack is not fixed
+                depth 1- roll
+                // Swap with the dict from which we extracted recv_internal and (maybe) recv_external
+                swap
+
+                // Check if the dict is empty
+                dup null?
+                // Store a copy of this flag in the bottom of the stack
+                dup depth 1- -roll
+                {
+                    // If the dict is empty, just drop it (it will be null if it's empty)
+                    drop
+                }
+                {
+                    // If the dict is not empty, prepare continuation to be stored in c3
+                    <{
+                        // Save this dict as first ref in this continuation, it will be pushed in runtime by DICTPUSHCONST
+                        swap @procdictkeylen DICTPUSHCONST
+                        // Jump to the needed function by it's index
+                        DICTIGETJMPZ
+                        // If such key is not found, throw 11 along with the key as an argument
+                        11 THROWARG
+                    }> PUSHCONT
+                    // Store the continuation in c3
+                    c3 POP
+                } cond
+
+                // Function id is on top of the (runtime) stack
+                DUP IFNOTJMP:<{
+                    // place recv_internal here
+                    DROP swap @addop
+                }>
+
+                // Bring back the flag, indicating if the dict is empty or not from the bottom of the stack
+                depth 1- roll
+                {
+                    // If the dict is empty, throw 11
+                    11 THROWARG
+                }
+                {
+                    // If the dict is not empty, jump to continuation from c3
+                    c3 PUSH JMPX
+                } cond
+            }> b>
+        } : }END>c
+        current@ context! current!
+    } does @atend !
+""";
+
+() __tact_selector_hack() method_id(65535) {
+    return __tact_selector_hack_asm();
+}

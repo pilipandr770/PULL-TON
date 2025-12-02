@@ -1,0 +1,680 @@
+// automatically generated from `@stdlib/std/stdlib.fc` `C:/Users/ПК/pull_ton/contracts/contracts/build/CommunityTonPool.tact_CommunityTonPool.fc` 
+PROGRAM{
+  DECLPROC __tact_not_null
+  DECLPROC __tact_context_get
+  DECLPROC __tact_context_get_sender
+  DECLPROC __tact_dict_get_slice_uint
+  DECLPROC __tact_dict_set_slice_uint
+  DECLPROC $DeployOk$_store
+  DECLPROC $DeployOk$_store_cell
+  DECLPROC $CommunityTonPool$_store
+  DECLPROC $CommunityTonPool$_load
+  DECLPROC $Context$_get_value
+  DECLPROC $CommunityTonPool$init$_load
+  DECLPROC $CommunityTonPool$_contract_init
+  DECLPROC $CommunityTonPool$_contract_load
+  DECLPROC $CommunityTonPool$_contract_store
+  DECLPROC $CommunityTonPool$_fun_poolBalanceNow
+  DECLPROC $CommunityTonPool$_fun_poolBalanceBeforeMsg
+  DECLPROC $CommunityTonPool$_fun_getUserSharesInternal
+  DECLPROC $CommunityTonPool$_fun_setUserShares
+  DECLPROC $CommunityTonPool$_fun_poolBalance
+  DECLPROC $CommunityTonPool$_fun_totalPoolShares
+  DECLPROC $CommunityTonPool$_fun_userShares
+  DECLPROC $CommunityTonPool$_fun_sharePrice
+  DECLPROC $MessageParameters$_constructor_bounce_to_value_mode_body
+  DECLPROC $CommunityTonPool$_fun_notify
+  DECLPROC $SendParameters$_constructor_to_value_mode_bounce
+  DECLPROC $DeployOk$_constructor_queryId
+  107132 DECLMETHOD %poolBalance
+  78652 DECLMETHOD %totalPoolShares
+  80970 DECLMETHOD %userShares
+  86219 DECLMETHOD %sharePrice
+  DECLPROC recv_internal
+  65535 DECLMETHOD __tact_selector_hack
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sender
+  DECLGLOBVAR __tact_child_contract_codes
+  DECLGLOBVAR __tact_randomized
+  __tact_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+  }>
+  __tact_context_get PROCINLINE:<{
+    __tact_context GETGLOB
+    4 UNTUPLE
+  }>
+  __tact_context_get_sender PROCINLINE:<{
+    __tact_context_sender GETGLOB
+  }>
+  __tact_dict_get_slice_uint PROCINLINE:<{
+    s1 s3 s3 XCHG3
+        DICTGET NULLSWAPIFNOT
+    IF:<{
+      SWAP
+      LDUX
+      DROP
+    }>ELSE<{
+      2DROP
+      PUSHNULL
+    }>
+  }>
+  __tact_dict_set_slice_uint PROCINLINE:<{
+    OVER
+    ISNULL
+    IF:<{
+      2DROP
+      -ROT
+          DICTDEL
+      DROP
+    }>ELSE<{
+      NEWC
+      SWAP
+      STUX
+      s1 s3 s3 XCHG3
+      DICTSETB
+    }>
+  }>
+  $DeployOk$_store PROCINLINE:<{
+    2952335191 PUSHINT
+    ROT
+    32 STU
+    64 STU
+  }>
+  $DeployOk$_store_cell PROCINLINE:<{
+    SWAP
+    $DeployOk$_store INLINECALLDICT
+    ENDC
+  }>
+  $CommunityTonPool$_store PROCINLINE:<{
+    s4 s5 XCHG2
+    128 STU
+    s1 s2 XCHG
+    STDICT
+    SWAP
+    STVARUINT16
+    SWAP
+    STVARUINT16
+    8 STU
+  }>
+  $CommunityTonPool$_load PROCINLINE:<{
+    128 LDU
+    LDDICT
+    LDVARUINT16
+    LDVARUINT16
+    8 LDU
+    5 -ROLL
+  }>
+  $Context$_get_value PROCINLINE:<{
+    s1 s3 XCHG
+    3 BLKDROP
+  }>
+  $CommunityTonPool$init$_load PROCINLINE:<{
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
+  $CommunityTonPool$_contract_init PROCINLINE:<{
+    0 PUSHINT
+    PUSHNULL
+    1000000000 PUSHINT
+    ROT
+    s0 s3 XCHG
+    50000000 PUSHINT
+    SWAP
+  }>
+  $CommunityTonPool$_contract_load PROCINLINE:<{
+    c4 PUSH
+    CTOS
+    1 LDI
+    SWAP
+    IF:<{
+      $CommunityTonPool$_load INLINECALLDICT
+      1 5 BLKDROP2
+    }>ELSE<{
+      $CommunityTonPool$init$_load INLINECALLDICT
+      SWAP
+      ENDS
+      $CommunityTonPool$_contract_init INLINECALLDICT
+    }>
+  }>
+  $CommunityTonPool$_contract_store PROCINLINE:<{
+    NEWC
+    TRUE
+    SWAP
+    1 STI
+    5 -ROLL
+    $CommunityTonPool$_store INLINECALLDICT
+    ENDC
+    c4 POP
+  }>
+  $CommunityTonPool$_fun_poolBalanceNow PROCREF:<{
+        BALANCE FIRST
+  }>
+  $CommunityTonPool$_fun_poolBalanceBeforeMsg PROCREF:<{
+    __tact_context_get INLINECALLDICT
+    s1 s3 XCHG
+    3 BLKDROP
+        BALANCE FIRST
+    SWAP
+    SUB
+  }>
+  $CommunityTonPool$_fun_getUserSharesInternal PROCREF:<{
+    267 PUSHINT
+    s5 PUSH
+    s0 s2 XCHG
+    7 PUSHPOW2
+    __tact_dict_get_slice_uint INLINECALLDICT
+    DUP
+    ISNULL
+    IFJMP:<{
+      DROP
+      0 PUSHINT
+    }>
+    __tact_not_null INLINECALLDICT
+  }>
+  $CommunityTonPool$_fun_setUserShares PROCREF:<{
+    DUP
+    1 LESSINT
+    IF:<{
+      DROP
+      s1 s4 XCHG
+      267 PUSHINT
+      SWAP
+      PUSHNULL
+      7 PUSHPOW2
+      __tact_dict_set_slice_uint INLINECALLDICT
+    }>ELSE<{
+      s2 s5 XCHG
+      267 PUSHINT
+      -ROT
+      7 PUSHPOW2
+      __tact_dict_set_slice_uint INLINECALLDICT
+    }>
+    s0 s3 XCHG
+  }>
+  $CommunityTonPool$_fun_poolBalance PROCREF:<{
+    $CommunityTonPool$_fun_poolBalanceNow INLINECALLDICT
+  }>
+  $CommunityTonPool$_fun_totalPoolShares PROCREF:<{
+    s4 PUSH
+  }>
+  $CommunityTonPool$_fun_userShares PROCREF:<{
+    $CommunityTonPool$_fun_getUserSharesInternal INLINECALLDICT
+  }>
+  $CommunityTonPool$_fun_sharePrice PROCREF:<{
+    s4 PUSH
+    IFNOTJMP:<{
+      0 PUSHINT
+    }>
+    $CommunityTonPool$_fun_poolBalanceNow INLINECALLDICT
+    s5 PUSH
+    DIV
+  }>
+  $MessageParameters$_constructor_bounce_to_value_mode_body PROCINLINE:<{
+    s3 s3 XCHG2
+    s0 s4 XCHG
+  }>
+  $CommunityTonPool$_fun_notify PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    FALSE
+    0 PUSHINT
+    s0 s3 XCHG2
+    66 PUSHINT
+    SWAP
+    $MessageParameters$_constructor_bounce_to_value_mode_body INLINECALLDICT
+        NEWC
+        b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+        1 STI               // store `bounce`
+        b{000} STSLICECONST // store bounced = false and src = addr_none
+        STSLICE             // store `to`
+        SWAP
+        STGRAMS             // store `value`
+        106 PUSHINT         // 1 + 4 + 4 + 64 + 32 + 1
+        STZEROES
+        // → Stack state
+        // s0: Builder
+        // s1: `body`
+        // s2: `mode`
+        STDICT
+        ENDC
+        SWAP
+        SENDRAWMSG
+  }>
+  $SendParameters$_constructor_to_value_mode_bounce PROCINLINE:<{
+    s1 s3 XCHG
+    PUSHNULL
+    PUSHNULL
+    s4 s3 XCHG2
+    PUSHNULL
+    s0 s3 XCHG
+  }>
+  $DeployOk$_constructor_queryId PROCINLINE:<{
+  }>
+  %poolBalance PROC:<{
+    $CommunityTonPool$_contract_load INLINECALLDICT
+    $CommunityTonPool$_fun_poolBalance INLINECALLDICT
+    5 1 BLKDROP2
+  }>
+  %totalPoolShares PROC:<{
+    $CommunityTonPool$_contract_load INLINECALLDICT
+    $CommunityTonPool$_fun_totalPoolShares INLINECALLDICT
+    5 1 BLKDROP2
+  }>
+  %userShares PROC:<{
+    $CommunityTonPool$_contract_load INLINECALLDICT
+    5 ROLL
+    $CommunityTonPool$_fun_userShares INLINECALLDICT
+    5 1 BLKDROP2
+  }>
+  %sharePrice PROC:<{
+    $CommunityTonPool$_contract_load INLINECALLDICT
+    $CommunityTonPool$_fun_sharePrice INLINECALLDICT
+    5 1 BLKDROP2
+  }>
+  recv_internal PROC:<{
+    c2 SAVE
+    SAMEALTSAVE
+    SWAP
+    CTOS
+    2 PUSHINT
+    SDSKIPFIRST
+    1 LDI
+    1 LDI
+    LDMSGADDR
+    OVER
+    s3 s4 XCHG
+    s6 s6 XCHG2
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    __tact_context_sender SETGLOB
+    $CommunityTonPool$_contract_load INLINECALLDICT
+    s0 s6 XCHG
+    IFJMP:<{
+      6 BLKDROP
+    }>
+    0 PUSHINT
+    s5 PUSH
+    SBITS
+    DUP
+    31 GTINT
+    IF:<{
+      NIP
+      s5 PUSH
+      32 PLDU
+      DUP
+      2291679769 PUSHINT
+      EQUAL
+      IFJMP:<{
+        2DROP
+        s0 s4 XCHG
+        32 PUSHINT
+        SDSKIPFIRST
+        128 LDU
+        DROP
+        __tact_context_get_sender INLINECALLDICT
+        OVER
+        0 GTINT
+        1002 THROWIFNOT
+        s5 s6 s6 XC2PU
+        $CommunityTonPool$_fun_getUserSharesInternal INLINECALLDICT
+        s6 s0 PUSH2
+        LEQ
+        1003 THROWIFNOT
+        5 -ROLL
+        $CommunityTonPool$_fun_poolBalanceBeforeMsg INLINECALLDICT
+        s2 PUSH
+        SUB
+        DUP
+        0 GTINT
+        1004 THROWIFNOT
+        s7 PUSH
+        MUL
+        s5 PUSH
+        DIV
+        DUP
+        0 GTINT
+        1005 THROWIFNOT
+        s5 s7 XCPU
+        SUB
+        s6 s7 XCHG2
+        SUB
+        s5 s6 XCHG
+        s3 s4 XCHG
+        s1 s3 s0 XCHG3
+        s6 s7 s(-1) XCPUXC
+        $CommunityTonPool$_fun_setUserShares INLINECALLDICT
+        s6 s5 XCHG2
+        2 PUSHINT
+        TRUE
+        $SendParameters$_constructor_to_value_mode_bounce INLINECALLDICT
+            NEWC
+            b{01} STSLICECONST  // store tag = $0 and ihr_disabled = true
+            1 STI               // store `bounce`
+            b{000} STSLICECONST // store bounced = false and src = addr_none
+            STSLICE             // store `to`
+            SWAP
+            STGRAMS             // store `value`
+            105 PUSHINT         // 1 + 4 + 4 + 64 + 32
+            STZEROES            // store currency_collection, ihr_fee, fwd_fee, created_lt and created_at
+            // → Stack state
+            // s0: Builder
+            // s1: `data`
+            // s2: `code`
+            // s3: `body`
+            // s4: `mode`
+            // Group 2: Placing the Builder after code and data, then checking those for nullability
+            s2 XCHG0
+            DUP2
+            ISNULL
+            SWAP
+            ISNULL
+            AND
+            // → Stack state
+            // s0: -1 (true) if `data` and `code` are both null, 0 (false) otherwise
+            // s1: `code`
+            // s2: `data`
+            // s3: Builder
+            // s4: `body`
+            // s5: `mode`
+            // Group 3: Left branch of the IFELSE, executed if s0 is -1 (true)
+            <{
+                DROP2 // drop `data` and `code`, since either of those is null
+                b{0} STSLICECONST
+            }> PUSHCONT
+            // Group 3: Right branch of the IFELSE, executed if s0 is 0 (false)
+            <{
+                // _ split_depth:(Maybe (## 5))
+                //   special:(Maybe TickTock)
+                //   code:(Maybe ^Cell)
+                //   data:(Maybe ^Cell)
+                //   library:(Maybe ^Cell)
+                // = StateInit;
+                ROT                // place message Builder on top
+                b{10} STSLICECONST // store Maybe = true, Either = false
+                // Start composing inlined StateInit
+                b{00} STSLICECONST // store split_depth and special first
+                STDICT             // store code
+                STDICT             // store data
+                b{0} STSLICECONST  // store library
+            }> PUSHCONT
+            // Group 3: IFELSE that does the branching shown above
+            IFELSE
+            // → Stack state
+            // s0: Builder
+            // s1: null or StateInit
+            // s2: `body`
+            // s3: `mode`
+            // Group 4: Finalizing the message
+            STDICT // store `body` as ref with an extra Maybe bit, since `body` might be null
+            ENDC
+            // → Stack state
+            // s0: Cell
+            // s1: `mode`
+            // Group 5: Sending the message, with `mode` on top
+            SWAP
+            SENDRAWMSG // https://github.com/tact-lang/tact/issues/1558
+        2 3 BLKSWAP
+        $CommunityTonPool$_contract_store INLINECALLDICT
+        RETALT
+      }>
+      DUP
+      2490013878 PUSHINT
+      EQUAL
+      IFJMP:<{
+        2DROP
+        s0 s4 XCHG
+        32 PUSHINT
+        SDSKIPFIRST
+        64 LDU
+        DROP
+        $DeployOk$_constructor_queryId INLINECALLDICT
+        NEWC
+        $DeployOk$_store_cell INLINECALLDICT
+        s3 s5 XCHG
+        s4 s3 s0 XCHG3
+        $CommunityTonPool$_fun_notify INLINECALLDICT
+        $CommunityTonPool$_contract_store INLINECALLDICT
+        RETALT
+      }>
+      SWAP
+    }>
+    OVER
+    0 EQINT
+    SWAP
+    33 LESSINT
+    AND
+    IFJMP:<{
+      DROP
+      s4 POP
+      __tact_context_get INLINECALLDICT
+      s1 s3 XCHG
+      3 BLKDROP
+      __tact_context_get_sender INLINECALLDICT
+      s1 s2 PUSH2
+      GEQ
+      IF:<{
+        s5 s6 XCHG2
+        $CommunityTonPool$_fun_poolBalanceBeforeMsg INLINECALLDICT
+        s5 PUSH
+        0 EQINT
+        IF:<{
+          TRUE
+        }>ELSE<{
+          DUP
+          0 EQINT
+        }>
+        IF:<{
+          DROP
+        }>ELSE<{
+          s6 s5 XCPU
+          MUL
+          s0 s6 XCHG2
+          DIV
+          s0 s5 XCHG
+        }>
+        s5 PUSH
+        0 GTINT
+        IF:<{
+          s4 s5 XCPU
+          ADD
+          s4 s6 XCPU
+          $CommunityTonPool$_fun_getUserSharesInternal INLINECALLDICT
+          s0 s6 XCHG2
+          ADD
+          s4 s6 XCHG
+          s3 s5 XCHG
+          s4 s3 s0 XCHG3
+          s1 s2 XCHG
+          $CommunityTonPool$_fun_setUserShares INLINECALLDICT
+          3 2 BLKSWAP
+        }>ELSE<{
+          s5 POP
+          s5 POP
+        }>
+        s3 s4 XCHG
+      }>ELSE<{
+        2DROP
+      }>
+      s0 s3 s4 XCHG3
+      $CommunityTonPool$_contract_store INLINECALLDICT
+    }>
+    0 EQINT
+    IF:<{
+      s4 PUSH
+      HASHSU
+      s5 POP
+      s0 s4 XCHG
+      49074241797526130644266802596458074611826286042655858212129946055703351528949 PUSHINT
+      EQUAL
+      IFJMP:<{
+        __tact_context_get INLINECALLDICT
+        s1 s3 XCHG
+        3 BLKDROP
+        __tact_context_get_sender INLINECALLDICT
+        s1 s2 PUSH2
+        GEQ
+        1001 THROWIFNOT
+        s5 s6 XCHG2
+        $CommunityTonPool$_fun_poolBalanceBeforeMsg INLINECALLDICT
+        s5 PUSH
+        0 EQINT
+        IF:<{
+          TRUE
+        }>ELSE<{
+          DUP
+          0 EQINT
+        }>
+        IF:<{
+          DROP
+        }>ELSE<{
+          s6 s5 XCPU
+          MUL
+          s0 s6 XCHG2
+          DIV
+          s0 s5 XCHG
+        }>
+        s5 PUSH
+        0 GTINT
+        1002 THROWIFNOT
+        s4 s5 XCPU
+        ADD
+        s4 s6 XCPU
+        $CommunityTonPool$_fun_getUserSharesInternal INLINECALLDICT
+        s0 s6 XCHG2
+        ADD
+        s4 s6 XCHG
+        s3 s5 XCHG
+        s4 s3 s0 XCHG3
+        s1 s2 XCHG
+        $CommunityTonPool$_fun_setUserShares INLINECALLDICT
+        $CommunityTonPool$_contract_store INLINECALLDICT
+        RETALT
+      }>
+    }>ELSE<{
+      s4 POP
+    }>
+    __tact_context_get INLINECALLDICT
+    s1 s3 XCHG
+    3 BLKDROP
+    __tact_context_get_sender INLINECALLDICT
+    s1 s2 PUSH2
+    GEQ
+    IF:<{
+      s5 s6 XCHG2
+      $CommunityTonPool$_fun_poolBalanceBeforeMsg INLINECALLDICT
+      s5 PUSH
+      0 EQINT
+      IF:<{
+        TRUE
+      }>ELSE<{
+        DUP
+        0 EQINT
+      }>
+      IF:<{
+        DROP
+      }>ELSE<{
+        s6 s5 XCPU
+        MUL
+        s0 s6 XCHG2
+        DIV
+        s0 s5 XCHG
+      }>
+      s5 PUSH
+      0 GTINT
+      IF:<{
+        s4 s5 XCPU
+        ADD
+        s4 s6 XCPU
+        $CommunityTonPool$_fun_getUserSharesInternal INLINECALLDICT
+        s0 s6 XCHG2
+        ADD
+        s4 s6 XCHG
+        s3 s5 XCHG
+        s4 s3 s0 XCHG3
+        s1 s2 XCHG
+        $CommunityTonPool$_fun_setUserShares INLINECALLDICT
+        3 2 BLKSWAP
+      }>ELSE<{
+        s5 POP
+        s5 POP
+      }>
+      s3 s4 XCHG
+    }>ELSE<{
+      2DROP
+    }>
+    s0 s3 s4 XCHG3
+    $CommunityTonPool$_contract_store INLINECALLDICT
+  }>
+  __tact_selector_hack PROC:<{
+    @atend @ 1 {
+            execute current@ context@ current!
+            {
+                // The core idea of this function is to save gas by avoiding unnecessary dict jump, when recv_internal/recv_external is called
+                // We want to extract recv_internal/recv_external from the dict and select needed function
+                // not by jumping to the needed function by it's index, but by using usual IF statements.
+                }END> b> // Close previous builder, now we have a cell of previous code on top of the stack
+                <{ // Start of the new code builder
+                    SETCP0
+                    // Swap the new code builder with the previous code, now we have previous code on top of the stack
+                    swap
+                    // Transform cell to slice and load first ref from the previous code, now we have the dict on top of the stack
+                    <s ref@
+                    // Extract the recv_internal from the dict
+                    dup 0 swap @procdictkeylen idict@ { "internal shortcut error" abort } ifnot
+                    swap
+                    // Delete the recv_internal from the dict
+                    0 swap @procdictkeylen idict- drop
+                    // Delete the recv_external from the dict (it's okay if it's not there)
+                    -1 swap @procdictkeylen idict- drop
+                    // Delete the __tact_selector_hack from the dict
+                    65535 swap @procdictkeylen idict- drop
+                    // Bring the code builder from the bottom of the stack
+                    // because if recv_external extraction is optional, and the number of elements on the stack is not fixed
+                    depth 1- roll
+                    // Swap with the dict from which we extracted recv_internal and (maybe) recv_external
+                    swap
+                    // Check if the dict is empty
+                    dup null?
+                    // Store a copy of this flag in the bottom of the stack
+                    dup depth 1- -roll
+                    {
+                        // If the dict is empty, just drop it (it will be null if it's empty)
+                        drop
+                    }
+                    {
+                        // If the dict is not empty, prepare continuation to be stored in c3
+                        <{
+                            // Save this dict as first ref in this continuation, it will be pushed in runtime by DICTPUSHCONST
+                            swap @procdictkeylen DICTPUSHCONST
+                            // Jump to the needed function by it's index
+                            DICTIGETJMPZ
+                            // If such key is not found, throw 11 along with the key as an argument
+                            11 THROWARG
+                        }> PUSHCONT
+                        // Store the continuation in c3
+                        c3 POP
+                    } cond
+                    // Function id is on top of the (runtime) stack
+                    DUP IFNOTJMP:<{
+                        // place recv_internal here
+                        DROP swap @addop
+                    }>
+                    // Bring back the flag, indicating if the dict is empty or not from the bottom of the stack
+                    depth 1- roll
+                    {
+                        // If the dict is empty, throw 11
+                        11 THROWARG
+                    }
+                    {
+                        // If the dict is not empty, jump to continuation from c3
+                        c3 PUSH JMPX
+                    } cond
+                }> b>
+            } : }END>c
+            current@ context! current!
+        } does @atend !
+  }>
+}END>c
