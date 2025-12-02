@@ -1,6 +1,17 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
-import { getPoolState, getUserShares, formatTon, getPoolAddress } from '../lib/ton';
+import { 
+  getPoolState, 
+  getUserShares, 
+  getUserValue,
+  getUserProfit,
+  formatTon, 
+  getPoolAddress,
+  getNetwork,
+  isMainnet,
+  getEstimatedAPY,
+  isReadyForNominatorStake
+} from '../lib/ton';
 
 const router = Router();
 
@@ -9,6 +20,8 @@ router.get('/info', async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Try to get live data from chain
     const poolAddress = getPoolAddress();
+    const network = getNetwork();
+    const mainnet = isMainnet();
     let poolData;
 
     if (poolAddress) {
@@ -25,6 +38,26 @@ router.get('/info', async (req: Request, res: Response, next: NextFunction) => {
     const totalShares = poolData?.totalShares || cachedStats?.totalShares || '0';
     const sharePrice = poolData?.sharePrice || cachedStats?.sharePrice || '0';
 
+    // Mainnet-specific data
+    let mainnetData = {};
+    if (mainnet) {
+      const apy = await getEstimatedAPY();
+      const readyForStake = await isReadyForNominatorStake();
+      
+      mainnetData = {
+        stakedToNominator: poolData?.stakedToNominator || '0',
+        stakedToNominatorTon: formatTon(poolData?.stakedToNominator || '0'),
+        pendingRewards: poolData?.pendingRewards || '0',
+        pendingRewardsTon: formatTon(poolData?.pendingRewards || '0'),
+        withdrawQueue: poolData?.withdrawQueue || '0',
+        withdrawQueueTon: formatTon(poolData?.withdrawQueue || '0'),
+        estimatedAPY: apy,
+        isReadyForNominatorStake: readyForStake,
+        minNominatorStake: '10001000000000', // 10,001 TON
+        minNominatorStakeTon: '10001'
+      };
+    }
+
     res.json({
       success: true,
       pool: {
@@ -37,7 +70,9 @@ router.get('/info', async (req: Request, res: Response, next: NextFunction) => {
         totalUsers: cachedStats?.totalUsers || 0,
         minDeposit: '1000000000', // 1 TON
         minDepositTon: '1',
-        network: process.env.TON_NETWORK || 'testnet'
+        network: network,
+        isMainnet: mainnet,
+        ...mainnetData
       }
     });
   } catch (error) {
@@ -49,34 +84,48 @@ router.get('/info', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/position/:address', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { address } = req.params;
+    const mainnet = isMainnet();
 
     const shares = await getUserShares(address);
     const poolState = await getPoolState();
 
-    // Calculate estimated value
+    // For mainnet, use contract getters for accurate values
     let estimatedValue = '0';
-    if (BigInt(poolState.totalShares) > 0n) {
-      estimatedValue = (
-        (BigInt(poolState.balance) * BigInt(shares)) / BigInt(poolState.totalShares)
-      ).toString();
+    let profit = '0';
+    let profitPercent = 0;
+
+    if (mainnet) {
+      // Use mainnet contract's getters
+      estimatedValue = await getUserValue(address);
+      profit = await getUserProfit(address);
+      
+      const initialValue = BigInt(estimatedValue) - BigInt(profit);
+      profitPercent = initialValue > 0n 
+        ? Number(BigInt(profit) * 10000n / initialValue) / 100 
+        : 0;
+    } else {
+      // Testnet calculation
+      if (BigInt(poolState.totalShares) > 0n) {
+        estimatedValue = (
+          (BigInt(poolState.balance) * BigInt(shares)) / BigInt(poolState.totalShares)
+        ).toString();
+      }
+
+      const sharesAmount = BigInt(shares);
+      const initialValue = sharesAmount;
+      const currentValue = BigInt(estimatedValue);
+      const profitBigInt = currentValue - initialValue;
+      profit = profitBigInt > 0n ? profitBigInt.toString() : '0';
+      profitPercent = initialValue > 0n 
+        ? Number(profitBigInt * 10000n / initialValue) / 100 
+        : 0;
     }
 
-    // Calculate percentage
+    // Calculate percentage of pool
     let percentage = 0;
     if (BigInt(poolState.totalShares) > 0n) {
       percentage = Number(BigInt(shares) * 10000n / BigInt(poolState.totalShares)) / 100;
     }
-
-    // Calculate profit based on share price
-    // Initial share price was 1 TON = 1 share (1e9 nanoton = 1e9 nanoshares)
-    // Current value of shares - initial deposit value
-    const sharesAmount = BigInt(shares);
-    const initialValue = sharesAmount; // 1:1 ratio at start (in nanoton)
-    const currentValue = BigInt(estimatedValue);
-    const profit = currentValue - initialValue;
-    const profitPercent = initialValue > 0n 
-      ? Number(profit * 10000n / initialValue) / 100 
-      : 0;
 
     res.json({
       success: true,
@@ -85,12 +134,11 @@ router.get('/position/:address', async (req: Request, res: Response, next: NextF
         estimatedValue: estimatedValue,
         estimatedValueTon: formatTon(estimatedValue),
         poolPercentage: percentage.toFixed(4),
-        // Profit calculations
-        initialValue: initialValue.toString(),
-        initialValueTon: formatTon(initialValue.toString()),
-        profit: profit.toString(),
-        profitTon: formatTon(profit > 0n ? profit.toString() : '0'),
-        profitPercent: profitPercent.toFixed(2)
+        profit: profit,
+        profitTon: formatTon(profit),
+        profitPercent: profitPercent.toFixed(2),
+        network: getNetwork(),
+        isMainnet: mainnet
       }
     });
   } catch (error) {

@@ -314,6 +314,75 @@ export default function Documentation() {
           </div>
         </section>
 
+        {/* Mainnet Architecture */}
+        <section className="glass rounded-xl p-8 border border-ton-500/30">
+          <div className="flex items-center space-x-3 mb-4">
+            <TrendingUp className="w-8 h-8 text-ton-400" />
+            <h2 className="text-2xl font-semibold text-white">🏦 Mainnet Staking-Architektur</h2>
+          </div>
+          <p className="text-slate-300 mb-6">
+            Im Mainnet wird unser Pool mit dem offiziellen <strong className="text-white">TON Nominator Pool</strong> integriert, 
+            um echte Staking-Erträge zu generieren.
+          </p>
+          
+          {/* Architecture Diagram */}
+          <div className="bg-slate-800/50 rounded-lg p-6 mb-6 font-mono text-sm overflow-x-auto">
+            <div className="text-slate-400 mb-4">Ablauf:</div>
+            <div className="space-y-2 text-slate-300">
+              <div className="flex items-center space-x-2">
+                <span className="text-ton-400">Nutzer</span>
+                <span className="text-slate-500">→</span>
+                <span className="text-green-400">1+ TON</span>
+                <span className="text-slate-500">→</span>
+                <span className="text-white">Community Pool</span>
+              </div>
+              <div className="flex items-center space-x-2 ml-16">
+                <span className="text-slate-500">↓</span>
+                <span className="text-yellow-400">(wenn 10.000+ TON gesammelt)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-white">Community Pool</span>
+                <span className="text-slate-500">→</span>
+                <span className="text-purple-400">Nominator Pool</span>
+                <span className="text-slate-500">→</span>
+                <span className="text-blue-400">Validator</span>
+              </div>
+              <div className="flex items-center space-x-2 ml-24">
+                <span className="text-slate-500">↓</span>
+                <span className="text-green-400">(~3-5% APY Erträge)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-green-400">Rewards</span>
+                <span className="text-slate-500">→</span>
+                <span className="text-white">Community Pool</span>
+                <span className="text-slate-500">→</span>
+                <span className="text-ton-400">Anteilsinhaber (proportional)</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+              <h4 className="font-medium text-green-400 mb-2">✓ Vorteile</h4>
+              <ul className="text-slate-300 text-sm space-y-1">
+                <li>• Echter Staking-Ertrag (~3-5% p.a.)</li>
+                <li>• Offizielle TON Infrastruktur</li>
+                <li>• Sicherheit durch geprüfte Validatoren</li>
+                <li>• Automatisches Compounding</li>
+              </ul>
+            </div>
+            <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+              <h4 className="font-medium text-blue-400 mb-2">ℹ️ Wichtig zu wissen</h4>
+              <ul className="text-slate-300 text-sm space-y-1">
+                <li>• Staking-Runde: ~18 Stunden</li>
+                <li>• Auszahlung: bis zu 36h Wartezeit</li>
+                <li>• Min. für Nominator: 10.000 TON</li>
+                <li>• Pool sammelt von allen Nutzern</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Contact */}
         <section className="glass rounded-xl p-8">
           <h2 className="text-2xl font-semibold text-white mb-4">Kontakt & Support</h2>
